@@ -10,6 +10,7 @@
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -61,9 +62,6 @@
                         autocomplete="email"
                     >
                 </div>
-                @error('email')
-                    <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
-                @enderror
             </div>
 
             {{-- Password Field --}}
@@ -94,9 +92,6 @@
                         </svg>
                     </button>
                 </div>
-                @error('password')
-                    <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
-                @enderror
             </div>
 
             {{-- Remember & Forgot --}}
@@ -276,6 +271,7 @@
             animate();
         })();
     </script>
+    <x-toast />
 </body>
 </html>
 

@@ -28,5 +28,23 @@ class Admin extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get all auth sessions for this admin
+     */
+    public function authSessions()
+    {
+        return $this->morphMany(AuthSession::class, 'authenticatable');
+    }
+
+    /**
+     * Get active (non-revoked, non-expired) sessions
+     */
+    public function activeSessions()
+    {
+        return $this->authSessions()
+            ->where('is_revoked', false)
+            ->where('expires_at', '>', now());
+    }
 }
 

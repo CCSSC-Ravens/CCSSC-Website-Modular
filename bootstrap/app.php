@@ -11,7 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // Register middleware aliases
+        $middleware->alias([
+            'jwt.auth' => \App\Http\Middleware\ValidateAccessToken::class,
+            'api.csrf' => \App\Http\Middleware\VerifyApiCsrf::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
