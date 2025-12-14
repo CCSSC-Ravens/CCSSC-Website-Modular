@@ -20,6 +20,16 @@ class ModulesServiceProvider extends ServiceProvider
             $module = basename($dir);
             $namespace = Str::kebab($module);
 
+            $config = $dir . DIRECTORY_SEPARATOR . 'Config' . DIRECTORY_SEPARATOR . 'config.php';
+            if (is_file($config)) {
+                $this->mergeConfigFrom($config, $namespace);
+            }
+        }
+
+        foreach (File::directories($modulesPath) as $dir) {
+            $module = basename($dir);
+            $namespace = Str::kebab($module);
+
             $web = $dir . DIRECTORY_SEPARATOR . 'routes' . DIRECTORY_SEPARATOR . 'web.php';
             if (is_file($web)) {
                 Route::middleware('web')->group($web);
@@ -44,13 +54,6 @@ class ModulesServiceProvider extends ServiceProvider
             if (is_dir($migrations)) {
                 $this->loadMigrationsFrom($migrations);
             }
-
-            $config = $dir . DIRECTORY_SEPARATOR . 'Config' . DIRECTORY_SEPARATOR . 'config.php';
-            if (is_file($config)) {
-                $this->mergeConfigFrom($config, $namespace);
-            }
         }
     }
 }
-
-
