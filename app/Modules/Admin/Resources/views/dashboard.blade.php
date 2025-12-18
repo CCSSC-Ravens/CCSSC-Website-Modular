@@ -1,34 +1,32 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Dashboard - {{ config('app.name', 'Laravel') }}</title>
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @endif
-</head>
-<body class="bg-[#FDFDFC] min-h-screen">
-    <nav class="bg-white border-b border-[#e3e3e0] px-6 py-4">
-        <div class="flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-[#1b1b18]">Admin Dashboard</h1>
-            <form method="POST" action="{{ route('admin.logout') }}">
-                @csrf
-                <button type="submit" class="text-[#706f6c] hover:text-[#1b1b18] transition-colors">
-                    Logout
-                </button>
-            </form>
-        </div>
-    </nav>
+@extends('admin::layouts.app')
 
-    <main class="container mx-auto px-6 py-8">
-        <div class="bg-white rounded-lg shadow-sm border border-[#e3e3e0] p-6">
-            <h2 class="text-xl font-semibold text-[#1b1b18] mb-4">Welcome, {{ Auth::guard('admin')->user()->email }}</h2>
-            <p class="text-[#706f6c]">You are logged in to the admin panel.</p>
-        </div>
-    </main>
-</body>
-</html>
+@section('title', 'Dashboard')
+@section('header', 'Dashboard')
 
+@section('content')
+    <div class="bg-white rounded-xl shadow-sm border border-[#e3e3e0] p-8">
+        <h2 class="text-xl font-semibold text-[#1b1b18] mb-4">
+            Welcome back, {{ Auth::guard('admin')->user()->name ?? 'Admin' }}
+        </h2>
+        <p class="text-[#706f6c] mb-6">This is your admin dashboard overview.</p>
+
+        <!-- Notification Demo Buttons -->
+        <div class="flex flex-wrap gap-4">
+            <button
+                @click="$dispatch('notify', { type: 'success', title: 'Operation Successful', message: 'The database has been updated successfully.' })"
+                class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                Test Success
+            </button>
+            <button
+                @click="$dispatch('notify', { type: 'error', title: 'Connection Failed', message: 'Could not connect to the remote server.' })"
+                class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                Test Error
+            </button>
+            <button
+                @click="$dispatch('notify', { type: 'info', title: 'New Update', message: 'Version 2.4.0 is now available for download.' })"
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                Test Info
+            </button>
+        </div>
+    </div>
+@endsection
