@@ -20,18 +20,12 @@
     @endif
 </head>
 
-<body class="bg-cover bg-center bg-no-repeat min-h-screen flex flex-col font-sans antialiased"
-    style="background-image: linear-gradient(to bottom, rgba(194, 65, 12, 0.55), rgba(250, 250, 250, 0))">
-    <div class="relative overflow-hidden"
-        style="background-image: url('{{ asset('images/homepage/background.png') }}'); background-repeat: repeat; background-size: contain;">
-        <img src="{{ asset('images/homepage/phoenix.png') }}" alt="Top Ornament"
-            class="absolute h-full right-0 bottom-0 object-cover object-right opacity-60 " />
-        <section class="flex flex-col w-full flex-grow px-10 pt-10">
-            <x-navbar class="mb-16" />
-        </section>
-        <section
-            class="relative w-full px-4 md:px-10 pb-0 max-w-[1920px] mx-auto min-h-[calc(100vh-80px)] flex flex-col justify-between">
-            <div class="grid grid-cols-2 gap-4 overflow-hidden">
+<body class="bg-cover bg-center bg-no-repeat min-h-screen flex flex-col font-sans antialiased" style="background-image: linear-gradient(to bottom, rgba(194, 65, 12, 0.85), rgba(250, 250, 250, 0)), url('{{ asset('images/homepage/background.png') }}');">
+    <section class="flex flex-col w-full flex-grow px-10 pt-10">
+        <x-navbar class="mb-16" />
+    </section>
+    <section
+        class="relative w-full px-4 md:px-25 pb-0 max-w-[1920px] mx-auto min-h-[calc(100vh-80px)] flex flex-col justify-between">
 
             </div>
             {{-- Hero Text Section --}}

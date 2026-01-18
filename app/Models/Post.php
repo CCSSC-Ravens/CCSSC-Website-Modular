@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Post extends Model
 {
@@ -19,6 +20,7 @@ class Post extends Model
         'title',
         'content',
         'organization_user_id',
+        'thumbnail',
     ];
 
     /**
@@ -27,5 +29,13 @@ class Post extends Model
     public function organizationUser(): BelongsTo
     {
         return $this->belongsTo(OrganizationUser::class);
+    }
+
+    /**
+     * Get the gallery images for the post.
+     */
+    public function gallery(): HasMany
+    {
+        return $this->hasMany(PostGallery::class)->orderBy('order');
     }
 }
