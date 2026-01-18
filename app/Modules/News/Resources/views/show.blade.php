@@ -83,8 +83,8 @@
 
                     {{-- Article Content --}}
                     <div class="bg-white rounded-2xl shadow-md p-6 md:p-10 overflow-hidden">
-                        <div class="prose prose-lg max-w-none prose-headings:text-[#8B0000] prose-a:text-[#B13407] prose-a:no-underline hover:prose-a:underline break-words [overflow-wrap:anywhere] [word-break:break-word]">
-                            {!! nl2br(e($post->content)) !!}
+                        <div class="quill-content break-words [overflow-wrap:anywhere] [word-break:break-word]">
+                            {!! $post->content !!}
                         </div>
                     </div>
 

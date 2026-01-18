@@ -18,7 +18,7 @@
             </a>
         </div>
 
-        <form method="POST" action="{{ route('admin.posts.update', $post) }}" class="space-y-8">
+        <form method="POST" action="{{ route('admin.posts.update', $post) }}" enctype="multipart/form-data" class="space-y-8">
             @csrf
             @method('PUT')
 

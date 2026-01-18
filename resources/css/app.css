@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'quill/dist/quill.snow.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -8,4 +9,315 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* Custom Quill Editor Styling */
+.quill-editor-container {
+    @apply w-full;
+}
+
+.quill-editor-container .ql-container {
+    @apply rounded-b-lg border border-[#e3e3e0] min-h-[300px];
+    font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+.quill-editor-container .ql-toolbar {
+    @apply rounded-t-lg border border-[#e3e3e0] border-b-0 bg-white;
+}
+
+.quill-editor-container .ql-editor {
+    @apply text-sm;
+    min-height: 300px;
+}
+
+.quill-editor-container .ql-editor.ql-blank::before {
+    @apply text-gray-400 italic;
+}
+
+.quill-editor-container .ql-toolbar .ql-stroke {
+    stroke: #4b4a47;
+}
+
+.quill-editor-container .ql-toolbar .ql-fill {
+    fill: #4b4a47;
+}
+
+.quill-editor-container .ql-toolbar button:hover,
+.quill-editor-container .ql-toolbar button.ql-active {
+    @apply bg-[#f4f4f0];
+}
+
+.quill-editor-container .ql-toolbar button:hover .ql-stroke,
+.quill-editor-container .ql-toolbar button.ql-active .ql-stroke {
+    stroke: #FF4400;
+}
+
+.quill-editor-container .ql-toolbar button:hover .ql-fill,
+.quill-editor-container .ql-toolbar button.ql-active .ql-fill {
+    fill: #FF4400;
+}
+
+.quill-editor-container .ql-container:focus-within {
+    @apply ring-2 ring-[#FF4400] border-transparent;
+}
+
+/* Enhanced Tooltip Styling for Quill Toolbar */
+.quill-editor-container .ql-toolbar button,
+.quill-editor-container .ql-toolbar .ql-picker-label {
+    position: relative;
+}
+
+.quill-editor-container .ql-toolbar button[title]:hover::after,
+.quill-editor-container .ql-toolbar .ql-picker-label[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 8px;
+    padding: 4px 8px;
+    background-color: #1b1b18;
+    color: white;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    border-radius: 4px;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0;
+    animation: tooltipFadeIn 0.2s ease-out forwards;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.quill-editor-container .ql-toolbar button[title]:hover::before,
+.quill-editor-container .ql-toolbar .ql-picker-label[title]:hover::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 4px;
+    border: 4px solid transparent;
+    border-top-color: #1b1b18;
+    pointer-events: none;
+    z-index: 1001;
+    opacity: 0;
+    animation: tooltipFadeIn 0.2s ease-out forwards;
+}
+
+@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Ensure tooltips appear above other elements */
+.quill-editor-container .ql-toolbar {
+    position: relative;
+    z-index: 1;
+}
+
+/* Styling for Quill-generated content when displayed (News module) */
+.quill-content {
+    @apply text-gray-800;
+    font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.7;
+}
+
+/* Headings - Quill uses h1, h2, h3 tags */
+.quill-content h1,
+.quill-content h1 * {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #8B0000;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.quill-content h2,
+.quill-content h2 * {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #8B0000;
+    margin-top: 1.25rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+}
+
+.quill-content h3,
+.quill-content h3 * {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #8B0000;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+/* Paragraphs - Quill wraps content in <p> tags */
+.quill-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+
+.quill-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Ensure empty paragraphs don't take up space */
+.quill-content p:empty {
+    @apply mb-2;
+    min-height: 0;
+}
+
+/* Lists - Quill uses standard ul/ol/li tags */
+.quill-content ul,
+.quill-content ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+}
+
+.quill-content ul {
+    list-style-type: disc;
+}
+
+.quill-content ol {
+    list-style-type: decimal;
+}
+
+.quill-content li {
+    margin-bottom: 0.5rem;
+    line-height: 1.7;
+}
+
+.quill-content li:last-child {
+    margin-bottom: 0;
+}
+
+/* Nested lists */
+.quill-content ul ul,
+.quill-content ol ol,
+.quill-content ul ol,
+.quill-content ol ul {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Links */
+.quill-content a {
+    @apply text-[#B13407] no-underline;
+    transition: all 0.2s ease;
+}
+
+.quill-content a:hover {
+    @apply underline;
+}
+
+/* Text Formatting - Quill uses strong, em, u, s tags */
+.quill-content strong,
+.quill-content b {
+    font-weight: 700;
+}
+
+.quill-content em,
+.quill-content i {
+    font-style: italic;
+}
+
+.quill-content u {
+    text-decoration: underline;
+}
+
+.quill-content s,
+.quill-content strike {
+    text-decoration: line-through;
+}
+
+/* Images */
+.quill-content img {
+    @apply max-w-full h-auto rounded-lg my-4;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Text Alignment - Quill uses inline styles for alignment */
+.quill-content [style*="text-align: center"],
+.quill-content [style*="text-align:center"] {
+    text-align: center;
+}
+
+.quill-content [style*="text-align: right"],
+.quill-content [style*="text-align:right"] {
+    text-align: right;
+}
+
+.quill-content [style*="text-align: justify"],
+.quill-content [style*="text-align:justify"] {
+    text-align: justify;
+}
+
+.quill-content [style*="text-align: left"],
+.quill-content [style*="text-align:left"] {
+    text-align: left;
+}
+
+/* Blockquotes (if used) */
+.quill-content blockquote {
+    @apply border-l-4 border-[#8B0000] pl-4 italic my-4 text-gray-600;
+}
+
+/* Code blocks (if used) */
+.quill-content pre {
+    @apply bg-gray-100 p-4 rounded-lg overflow-x-auto my-4;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+.quill-content code {
+    @apply bg-gray-100 px-1 py-0.5 rounded text-sm;
+    font-family: 'Courier New', monospace;
+}
+
+/* Additional Quill-specific styling */
+.quill-content {
+    /* Reset any default margins/padding that might interfere */
+    margin: 0;
+    padding: 0;
+}
+
+/* Ensure all text content is visible */
+.quill-content * {
+    max-width: 100%;
+}
+
+/* Handle Quill's color and background color formatting */
+.quill-content [style*="color"] {
+    /* Preserve inline color styles from Quill */
+}
+
+.quill-content [style*="background-color"],
+.quill-content [style*="background"] {
+    /* Preserve inline background styles from Quill */
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+/* Ensure proper spacing between blocks */
+.quill-content > * + * {
+    margin-top: 0;
+}
+
+/* Fix for Quill's line breaks */
+.quill-content br {
+    display: block;
+    content: "";
+    margin-top: 0.5rem;
 }

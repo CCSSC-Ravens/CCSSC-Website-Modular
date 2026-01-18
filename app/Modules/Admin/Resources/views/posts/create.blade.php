@@ -18,7 +18,7 @@
             </a>
         </div>
 
-        <form method="POST" action="{{ route('admin.posts.store') }}" class="space-y-8">
+        <form method="POST" action="{{ route('admin.posts.store') }}" enctype="multipart/form-data" class="space-y-8">
             @csrf
 
             @include('admin::posts._form')
