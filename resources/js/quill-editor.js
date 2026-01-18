@@ -36,9 +36,10 @@ function initializeQuillEditor() {
     contentTextarea.parentNode.insertBefore(editorContainer, contentTextarea);
     contentTextarea.parentNode.insertBefore(hiddenInput, contentTextarea);
     
-    // Hide original textarea
+    // Hide original textarea and remove its name so it doesn't submit
     contentTextarea.style.display = 'none';
     contentTextarea.removeAttribute('required');
+    contentTextarea.removeAttribute('name'); // Remove name to prevent duplicate submission
     
     // Initialize Quill
     const quill = new Quill('#quill-editor', {
@@ -87,19 +88,31 @@ function initializeQuillEditor() {
             // This will still parse HTML properly and maintain block structure
             quill.clipboard.dangerouslyPasteHTML(normalizedContent, 'silent');
         }
-        hiddenInput.value = quill.root.innerHTML;
     }
+
+    // Helper function to get clean content (handle Quill's empty state)
+    function getCleanContent() {
+        const html = quill.root.innerHTML;
+        // Quill's empty state is <p><br></p> - treat this as empty
+        if (html === '<p><br></p>' || html === '<p></p>' || !quill.getText().trim()) {
+            return '';
+        }
+        return html;
+    }
+
+    // Initialize hidden input with current content
+    hiddenInput.value = getCleanContent();
 
     // Sync Quill content to hidden input on text change
     quill.on('text-change', function() {
-        hiddenInput.value = quill.root.innerHTML;
+        hiddenInput.value = getCleanContent();
     });
 
     // Also sync on form submit to ensure latest content is captured
     const form = contentTextarea.closest('form');
     if (form) {
         form.addEventListener('submit', function(e) {
-            hiddenInput.value = quill.root.innerHTML;
+            hiddenInput.value = getCleanContent();
         });
     }
 

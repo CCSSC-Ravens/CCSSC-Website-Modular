@@ -19,7 +19,7 @@
             id="{{ $name }}" 
             accept="image/*"
             class="block w-full rounded-lg border border-[#e3e3e0] px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#FF4400] focus:border-transparent"
-            onchange="previewThumbnail(this)">
+            onchange="window['previewThumbnail_{{ $name }}'](this)">
         
         @error($name)
             <p class="text-xs text-red-600">{{ $message }}</p>
@@ -48,28 +48,35 @@
 </div>
 
 <script>
-function previewThumbnail(input) {
-    const previewDiv = document.getElementById('{{ $name }}_preview');
-    const previewImg = document.getElementById('{{ $name }}_preview_img');
-    const currentImg = document.getElementById('{{ $name }}_current');
+(function() {
+    const thumbnailName = '{{ $name }}';
     
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
+    window['previewThumbnail_' + thumbnailName] = function(input) {
+        const previewDiv = document.getElementById(thumbnailName + '_preview');
+        const previewImg = document.getElementById(thumbnailName + '_preview_img');
+        const currentImg = document.getElementById(thumbnailName + '_current');
         
-        reader.onload = function(e) {
-            previewImg.src = e.target.result;
-            previewDiv.classList.remove('hidden');
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                previewDiv.classList.remove('hidden');
+                if (currentImg) {
+                    currentImg.style.display = 'none';
+                }
+            };
+            
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            previewDiv.classList.add('hidden');
             if (currentImg) {
-                currentImg.style.display = 'none';
+                currentImg.style.display = 'block';
             }
-        };
-        
-        reader.readAsDataURL(input.files[0]);
-    } else {
-        previewDiv.classList.add('hidden');
-        if (currentImg) {
-            currentImg.style.display = 'block';
         }
-    }
-}
+    };
+    
+    // Also expose generic function for backwards compatibility
+    window.previewThumbnail = window['previewThumbnail_' + thumbnailName];
+})();
 </script>
