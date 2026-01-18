@@ -1,18 +1,18 @@
 @props(['title', 'link' => '#'])
 
 <div
-    {{ $attributes->merge(['class' => 'group relative w-full min-h-[240px] bg-[#8F2203] rounded-tl-[36px] rounded-tr-[36px] p-6 flex flex-col justify-end transition-shadow duration-300 shadow-lg hover:shadow-xl overflow-hidden']) }}>
+    {{ $attributes->merge(['class' => 'group relative w-full min-h-[240px] bg-[#8F2203] rounded-tl-[36px] rounded-tr-[36px] p-6 flex flex-col transition-shadow duration-300 shadow-lg hover:shadow-xl overflow-hidden']) }}>
 
     {{-- Content Container --}}
-    <div class="relative z-10 flex flex-col gap-4 justify-end h-full">
+    <div class="relative z-10 flex flex-col gap-4 justify-between h-full">
 
         {{-- Title --}}
-        <h3 class="text-white text-3xl md:text-4xl font-extrabold font-['Instrument_Sans'] leading-tight tracking-tight">
+        <h3 class="text-white text-xl md:text-2xl font-extrabold font-['Instrument_Sans'] leading-tight tracking-tight">
             {{ $title }}
         </h3>
 
         {{-- Bottom Section --}}
-        <div>
+        <div class="">
             {{-- Divider --}}
             <div class="w-16 h-[3px] bg-white/80 mb-4 rounded-full"></div>
 

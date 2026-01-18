@@ -20,23 +20,22 @@
     @endif
 </head>
 
-<body class="bg-cover bg-center bg-no-repeat min-h-screen flex flex-col font-sans antialiased" style="background-image: linear-gradient(to bottom, rgba(194, 65, 12, 0.85), rgba(250, 250, 250, 0)), url('{{ asset('images/homepage/background.png') }}');">
-    <section class="flex flex-col w-full flex-grow px-10 pt-10">
-        <x-navbar class="mb-16" />
-    </section>
-    <section
-        class="relative w-full px-4 md:px-25 pb-0 max-w-[1920px] mx-auto min-h-[calc(100vh-80px)] flex flex-col justify-between">
+<body class="font-sans antialiased overflow-x-hidden">
+    {{-- Hero Section - Exact screen width and height --}}
+    <section class="h-screen w-screen bg-cover bg-center bg-no-repeat flex flex-col px-10 pt-10 relative"
+        style="background-image: linear-gradient(to bottom, rgba(194, 65, 12, 0.7) 0%, rgba(194, 65, 12, 0.4) 30%, rgba(250, 250, 250, 0) 60%), url('{{ asset('images/homepage/background.png') }}');">
+        <x-navbar class="shrink-0" />
+        <div class="flex-1 flex flex-col justify-between py-8">
 
-            </div>
             {{-- Hero Text Section --}}
-            <div class="pt-20 lg:pt-32 p-4 lg:pl-10 max-w-4xl z-10 pointer-events-none">
+            <div class="pt-10 lg:pt-15 p-4 lg:pl-10 max-w-4xl z-10 pointer-events-none">
 
                 <h1
-                    class="font-extrabold text-6xl md:text-8xl lg:text-[7rem] text-red-950 tracking-tighter leading-[0.9] mb-8 pointer-events-auto">
+                    class="font-extrabold text-4xl md:text-6xl lg:text-[5rem] text-red-950 tracking-tighter leading-[0.9] mb-8 pointer-events-auto">
                     Soaring beyond<br>limits.
                 </h1>
                 <div
-                    class="w-[613px] text-orange-700 text-lg md:text-xl font-normal font-roboto leading-relaxed mb-10 pointer-events-auto">
+                    class="w-[613px] text-orange-700 text-lg md:text-xl font-bold font-roboto leading-relaxed mb-10 pointer-events-auto">
                     The official website of Gordon College - College of Computer Studies Student Council.
                 </div>
                 <button
@@ -45,16 +44,15 @@
                 </button>
             </div>
 
-            {{-- Cards Grid Section --}}
-            <div class="w-full mt-10 lg:mt-0 z-10">
-                {{-- Offset the grid to start from the middle/right --}}
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-6 w-full items-end">
-                    {{-- Spacer columns for large screens --}}
-                    <div class="hidden lg:block lg:col-span-4 xl:col-span-3"></div>
+            <img src="{{ asset('images/homepage/phoenix.png') }}" alt="Phoenix Illustration"
+                class="absolute bottom-0 right-0 -z-1 h-full select-none pointer-events-none" />
 
+            {{-- Cards Grid Section --}}
+            <div class="absolute bottom-0 mr-10">
+                {{-- Offset the grid to start from the middle/right --}}
+                <div class="grid grid-cols-1 gap-6 w-[65%] items-end ml-auto">
                     {{-- Actual Cards --}}
-                    <div
-                        class="col-span-1 md:col-span-12 lg:col-span-8 xl:col-span-9 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-end">
+                    <div class="hidden lg:grid grid-cols-3 gap-6 items-end">
                         <x-breaking-card title="Sa Pagitan microfilm got 1st in RAITE" link="#"
                             class="bg-[#8F2203]" />
                         <x-breaking-card title="CCS bags medal in SkyDev’s hackathon" link="#"
@@ -64,12 +62,12 @@
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 
     {{-- Know More Section --}}
-    <section class="w-full bg-white py-24 px-4 md:px-10">
-        <div class="max-w-[1920px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <section class="w-full min-h-screen bg-white py-24 px-0">
+        <div class="w-full h-full grid grid-cols-1 lg:grid-cols-12 gap-12">
             {{-- Left Content: Title + Image --}}
             <div class="col-span-1 lg:col-span-8 space-y-12 pl-4 lg:pl-10">
                 {{-- Title --}}
