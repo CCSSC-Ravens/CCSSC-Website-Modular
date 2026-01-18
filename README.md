@@ -1,109 +1,69 @@
-## Getting Started
+# Architecture Overview
 
-### 1. Install PHP dependencies (backend)
+This codebase uses a **Modular Laravel Architecture**. Each module is a self-contained feature package with its own controllers, views, routes, and configuration.
 
-```sh
-composer install
+## Module Structure
+
+```
+app/Modules/{ModuleName}/
+├── Config/
+│   └── config.php          # Module-specific configuration
+├── Http/
+│   └── Controllers/        # Module controllers
+├── Resources/
+│   └── views/              # Module Blade templates
+├── routes/
+│   └── web.php             # Module routes
+└── (optional) database/migrations/
 ```
 
-### 2. Install Node.js dependencies (frontend)
+## Current Modules
 
-```sh
-npm install
-```
+| Module    | Purpose                                             |
+| --------- | --------------------------------------------------- |
+| **Admin** | Admin panel (auth, dashboard, CRUD for posts/users) |
+| **Home**  | Public homepage                                     |
+| **News**  | News/articles display                               |
 
-### 3. Run database migrations (if needed)
+## How It Works
 
-```sh
-php artisan migrate
-```
+The `ModulesServiceProvider` automatically discovers and registers each module by:
 
-### 4. Start the Laravel backend server
+1. **Loading configurations** - Merges module `Config/config.php` into Laravel's config
+2. **Registering routes** - Auto-loads `routes/web.php` and `routes/api.php`
+3. **Loading views** - Registers views with a namespace (e.g., `admin::dashboard`)
+4. **Loading translations** - If `Resources/lang/` exists
+5. **Loading migrations** - If `database/migrations/` exists
 
-```sh
-php artisan serve
-```
+## Shared Resources
 
-Visit [http://localhost:8000](http://localhost:8000) in your browser.
+Outside of modules, shared components live in:
 
-### 5. Start the Vite development server (for hot reload)
+| Location                      | Purpose                                           |
+| ----------------------------- | ------------------------------------------------- |
+| `app/Models/`                 | Eloquent models (shared across modules)           |
+| `app/Policies/`               | Authorization policies                            |
+| `app/Services/`               | Business logic services (JWT, Session)            |
+| `resources/views/components/` | Reusable Blade components (navbar, footer, cards) |
 
-```sh
-npm run dev
-```
+## Benefits of This Approach
 
--   This enables automatic browser refresh for changes in `resources/js`, `resources/css`, and Blade files.
--   Make sure your Node.js version is **20.19+** or **22.12+**.
+-   **Separation of concerns** - Each feature is self-contained
+-   **Scalability** - Add new modules without touching existing code
+-   **Maintainability** - Easy to find and modify feature-specific code
+-   **Reusability** - Modules can potentially be extracted to packages
 
 ---
 
-## Quick Start (Full Workflow)
+## Adding a New Module
 
-```sh
-composer install
-npm install
-php artisan migrate
-php artisan serve
-npm run dev
-```
-
--   Open [http://localhost:8000](http://localhost:8000) in your browser.
--   Edit your frontend files and see changes instantly with hot reload.
-
----
-
-## Modular structure overview (feature-first)
-
-This project uses a feature-first, modular layout under `app/Modules`. Each module owns its routes, controllers, and views. Example modules included:
-
--   `Home` → serves `/`
--   `News` → serves `/newsPage`
-
-### What changed
-
--   Added PSR-4 autoload for `App\Modules\` in `composer.json`.
--   Added `App\Providers\ModulesServiceProvider` to auto-load module routes, views, translations, migrations, and config.
--   Registered the provider in `bootstrap/providers.php`.
--   Moved page views into module view namespaces and simplified `routes/web.php`.
-
-### Where things live now
-
-```
-app/Modules/
-  Home/
-    Http/Controllers/HomeController.php
-    Resources/views/welcome.blade.php
-    routes/web.php
-  News/
-    Http/Controllers/NewsController.php
-    Resources/views/index.blade.php
-    routes/web.php
-```
-
-Root routes file:
-
-```
-routes/web.php  → (left minimal) modules register their own routes
-```
-
-### How it works
-
--   On boot, `ModulesServiceProvider` scans `app/Modules/*` and for each module:
-    -   Loads `routes/web.php` with `web` middleware
-    -   Loads `routes/api.php` with `api` middleware (if present)
-    -   Registers views from `Resources/views` under a kebab-case namespace of the module name (e.g., `Home` → `home`, `News` → `news`)
-    -   Optionally loads translations (`Resources/lang`), migrations (`database/migrations`), and config (`Config/config.php`)
-
----
-
-This lets you render module views via namespaced lookups, e.g.:
+Module views use namespaced lookups:
 
 ```php
 return view('home::welcome');   // from Home module
 return view('news::index');     // from News module
+return view('admin::dashboard'); // from Admin module
 ```
-
-### Add a new module (quick start)
 
 1. Create folders:
 
@@ -150,75 +110,18 @@ php artisan config:clear route:clear view:clear
 php artisan route:list --path=blog
 ```
 
-### Commands you may need
+### Useful Commands
 
--   Regenerate autoload and clear caches after adding/moving modules:
+Regenerate autoload and clear caches after adding/moving modules:
 
-```
+```bash
 composer dump-autoload && php artisan config:clear && php artisan route:clear && php artisan view:clear
 ```
 
-### Notes
+---
 
--   Shared layouts/partials can remain under `resources/views` or you can introduce a `Core` module for cross-cutting concerns.
--   Module view namespace is kebab-case of the folder name: `PaymentsGateway` → `payments-gateway::...`.
+## Notes
 
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
-
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
--   [Simple, fast routing engine](https://laravel.com/docs/routing).
--   [Powerful dependency injection container](https://laravel.com/docs/container).
--   Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
--   Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
--   Database agnostic [schema migrations](https://laravel.com/docs/migrations).
--   [Robust background job processing](https://laravel.com/docs/queues).
--   [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
--   **[Vehikl](https://vehikl.com)**
--   **[Tighten Co.](https://tighten.co)**
--   **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
--   **[64 Robots](https://64robots.com)**
--   **[Curotec](https://www.curotec.com/services/technologies/laravel)**
--   **[DevSquad](https://devsquad.com/hire-laravel-developers)**
--   **[Redberry](https://redberry.international/laravel-development)**
--   **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+-   Shared layouts/partials remain under `resources/views/components/`
+-   Module view namespace is kebab-case of the folder name: `PaymentsGateway` → `payments-gateway::...`
+-   This is a custom lightweight modular implementation (not using external packages)
