@@ -95,21 +95,25 @@
                     </div>
 
                     {{-- Text Content --}}
-                    <div class="space-y-6 text-[#2A2A2A] text-lg leading-relaxed font-sans mt-4">
-                        <p>The College of Computer Studies proudly congratulates its student filmmakers for securing
+                    <div class="space-y-6 text-[#2A2A2A] text-xl leading-relaxed font-['roboto'] mt-4">
+                        <p class="text-justify">The College of Computer Studies proudly congratulates its student
+                            filmmakers for securing
                             First Runner-Up in the Micro Short Film Contest at the Regional Assembly on Information
                             Technology Education in Cabanatuan City, Nueva Ecija.</p>
-                        <p>The entry “Sa Pagitan (Sumpa Kita)”, directed by Eizen Rodriguez, also received the People’s
+                        <p class="text-justify">The entry "Sa Pagitan (Sumpa Kita)", directed by Eizen Rodriguez, also
+                            received the People's
                             Choice Award and earned recognition for Best Actress, awarded to Ms. Erica Mae Camintoy
                             (BSCS 2).</p>
-                        <p>These achievements highlight the talent and dedication of the cast and crew, bringing pride
+                        <p class="text-justify">These achievements highlight the talent and dedication of the cast and
+                            crew, bringing pride
                             to the CCS community and the institution.</p>
                     </div>
                 </div>
             </div>
 
             {{-- Right Side: Navigation Buttons --}}
-            <div class="col-span-1 lg:col-span-4 lg:pl-12 flex flex-col gap-4 mt-8 lg:mt-0">
+            <div
+                class="col-span-1 lg:col-span-4 lg:pl-12 flex flex-col items-end gap-4 mt-8 lg:mt-0 w-full max-w-[999px] ml-auto">
                 <x-committee-button label="Executives" />
                 <x-committee-button label="Canaries" />
                 <x-committee-button label="Falcons" />
