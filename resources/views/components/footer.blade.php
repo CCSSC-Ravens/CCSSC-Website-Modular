@@ -43,7 +43,7 @@
                     <ul class="space-y-2 text-sm text-black">
                         <li><a href="#" class="hover:text-orange-900 transition-colors">Home</a></li>
                         <li><a href="#" class="hover:text-orange-900 transition-colors">About Us</a></li>
-                        <li><a href="#" class="hover:text-orange-900 transition-colors">Committees</a></li>
+                        <li><a href="#" class="hover:text-orange-900 transition-colors">Departments</a></li>
                         <li><a href="#" class="hover:text-orange-900 transition-colors">News</a></li>
                         {{-- <li><a href="#" class="hover:text-orange-900 transition-colors">Contact</a></li> --}}
                     </ul>

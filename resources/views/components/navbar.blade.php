@@ -21,8 +21,8 @@
                     Us</a>
             </li>
             <li>
-                <a href="#"
-                    class="text-white font-medium text-base hover:text-orange-100 transition-all duration-300 tracking-wide">Committees</a>
+                <a href="/departments"
+                    class="text-white font-medium text-base hover:text-orange-100 transition-all duration-300 tracking-wide">Departments</a>
             </li>
             <li>
                 <a href="/news"
