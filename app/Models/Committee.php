@@ -27,11 +27,11 @@ class Committee extends Model
     public static function defaultCommittees(): array
     {
         return [
-            ['name' => self::RAVENS, 'description' => null],
-            ['name' => self::HERONS, 'description' => null],
-            ['name' => self::CANARY, 'description' => null],
-            ['name' => self::NIGHTINGALE, 'description' => null],
-            ['name' => self::FALCONS, 'description' => null],
+            ['name' => self::RAVENS, 'description' => 'Known for their intelligence and complex social structures.'],
+            ['name' => self::HERONS, 'description' => 'Long-legged coastal birds often found in wetlands.'],
+            ['name' => self::CANARY, 'description' => 'Small songbirds popular for their bright colors and melodic voices.'],
+            ['name' => self::NIGHTINGALE, 'description' => 'Famous for its powerful and beautiful song, often heard at night.'],
+            ['name' => self::FALCONS, 'description' => 'High-speed birds of prey known for their incredible hunting vision.'],
         ];
     }
 
