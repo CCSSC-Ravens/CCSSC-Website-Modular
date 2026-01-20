@@ -110,10 +110,13 @@ class PostController extends Controller
                 ->route('admin.posts.index')
                 ->with('success', 'Post created successfully.');
         } catch (\Exception $e) {
+            \Log::error('Failed to create post: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
             return redirect()
                 ->back()
                 ->withInput()
-                ->with('error', 'Failed to create post. Please try again.');
+                ->with('error', 'Failed to create post: ' . $e->getMessage());
         }
     }
 
@@ -210,10 +213,13 @@ class PostController extends Controller
                 ->route('admin.posts.index')
                 ->with('success', 'Post updated successfully.');
         } catch (\Exception $e) {
+            \Log::error('Failed to update post: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
             return redirect()
                 ->back()
                 ->withInput()
-                ->with('error', 'Failed to update post. Please try again.');
+                ->with('error', 'Failed to update post: ' . $e->getMessage());
         }
     }
 
