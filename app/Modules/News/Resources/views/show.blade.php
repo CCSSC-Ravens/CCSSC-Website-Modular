@@ -167,6 +167,7 @@
 
     {{-- Footer --}}
     <x-footer />
+    <x-feedback-button />
 </body>
 
 </html>

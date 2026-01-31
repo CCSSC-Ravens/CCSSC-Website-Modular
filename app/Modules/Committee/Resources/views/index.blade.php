@@ -234,7 +234,7 @@
 
                 {{-- Navbar only on first section --}}
                 @if ($index === 0)
-                    <div class="relative w-full px-6 md:px-10 pt-8 z-[2]">
+                    <div class="relative w-full px-10 pt-10 z-[2]">
                         <x-navbar />
                     </div>
                 @endif
@@ -363,6 +363,7 @@
             });
         })();
     </script>
+    <x-feedback-button />
 </body>
 
 </html>
