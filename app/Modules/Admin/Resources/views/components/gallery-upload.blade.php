@@ -18,7 +18,7 @@
             accept="image/*"
             multiple
             class="block w-full rounded-lg border border-[#e3e3e0] px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#FF4400] focus:border-transparent"
-            onchange="handleGalleryUpload(this, {{ $maxFiles }})">
+            onchange="window['handleGalleryUpload_{{ $name }}'](this, {{ $maxFiles }})">
         
         @error($name)
             <p class="text-xs text-red-600">{{ $message }}</p>
@@ -39,7 +39,7 @@
                                 class="w-full h-32 rounded-lg object-cover border border-[#e3e3e0]">
                             <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 rounded-lg transition-opacity flex items-center justify-center">
                                 <button type="button" 
-                                    onclick="removeExistingImage(this, '{{ $imageId }}')"
+                                    onclick="window['removeExistingImage_{{ $name }}'](this, '{{ $imageId }}')"
                                     class="opacity-0 group-hover:opacity-100 text-white bg-red-500 hover:bg-red-600 rounded px-2 py-1 text-xs transition-opacity">
                                     Remove
                                 </button>
@@ -59,106 +59,114 @@
 </div>
 
 <script>
-let selectedFiles = [];
-let existingImageIds = [];
-
-function handleGalleryUpload(input, maxFiles) {
-    const files = Array.from(input.files);
-    const container = document.getElementById('{{ $name }}_preview_container');
-    const countElement = document.getElementById('{{ $name }}_count');
-    const countSpan = document.getElementById('{{ $name }}_selected_count');
+(function() {
+    // Use unique namespaced functions to avoid conflicts with Turbo navigation
+    const galleryName = '{{ $name }}';
     
-    // Check total count (existing + new)
-    const existingCount = container.querySelectorAll('[data-new-image]').length;
-    const existingSavedCount = container.querySelectorAll('[data-image-id]:not([data-new-image])').length;
-    
-    if (files.length + existingCount + existingSavedCount > maxFiles) {
-        alert(`You can only upload a maximum of ${maxFiles} photos. Please remove some images first.`);
-        input.value = '';
-        return;
-    }
-    
-    // Clear previous new file previews
-    container.querySelectorAll('[data-new-image]').forEach(el => el.remove());
-    
-    // Add new file previews
-    files.forEach((file, index) => {
-        if (file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const div = document.createElement('div');
-                div.className = 'relative group';
-                div.setAttribute('data-new-image', 'true');
-                div.innerHTML = `
-                    <img src="${e.target.result}" 
-                        alt="Preview ${index + 1}"
-                        class="w-full h-32 rounded-lg object-cover border border-[#e3e3e0]">
-                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 rounded-lg transition-opacity flex items-center justify-center">
-                        <button type="button" 
-                            onclick="removeNewImage(this)"
-                            class="opacity-0 group-hover:opacity-100 text-white bg-red-500 hover:bg-red-600 rounded px-2 py-1 text-xs transition-opacity">
-                            Remove
-                        </button>
-                    </div>
-                `;
-                container.appendChild(div);
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-    
-    // Update count
-    const totalNew = container.querySelectorAll('[data-new-image]').length;
-    if (totalNew > 0) {
-        countSpan.textContent = totalNew;
-        countElement.classList.remove('hidden');
-    } else {
-        countElement.classList.add('hidden');
-    }
-}
-
-function removeNewImage(button) {
-    const container = document.getElementById('{{ $name }}_preview_container');
-    const div = button.closest('[data-new-image]');
-    if (div) {
-        div.remove();
-        
-        // Update file input
-        const input = document.getElementById('{{ $name }}');
-        const dt = new DataTransfer();
+    // Define functions on window with unique names based on component name
+    window['handleGalleryUpload_' + galleryName] = function(input, maxFiles) {
         const files = Array.from(input.files);
-        const index = Array.from(container.querySelectorAll('[data-new-image]')).indexOf(div);
+        const container = document.getElementById(galleryName + '_preview_container');
+        const countElement = document.getElementById(galleryName + '_count');
+        const countSpan = document.getElementById(galleryName + '_selected_count');
         
-        files.forEach((file, i) => {
-            if (i !== index) {
-                dt.items.add(file);
+        // Check total count (existing + new)
+        const existingCount = container.querySelectorAll('[data-new-image]').length;
+        const existingSavedCount = container.querySelectorAll('[data-image-id]:not([data-new-image])').length;
+        
+        if (files.length + existingCount + existingSavedCount > maxFiles) {
+            alert(`You can only upload a maximum of ${maxFiles} photos. Please remove some images first.`);
+            input.value = '';
+            return;
+        }
+        
+        // Clear previous new file previews
+        container.querySelectorAll('[data-new-image]').forEach(el => el.remove());
+        
+        // Add new file previews
+        files.forEach((file, index) => {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const div = document.createElement('div');
+                    div.className = 'relative group';
+                    div.setAttribute('data-new-image', 'true');
+                    div.innerHTML = `
+                        <img src="${e.target.result}" 
+                            alt="Preview ${index + 1}"
+                            class="w-full h-32 rounded-lg object-cover border border-[#e3e3e0]">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 rounded-lg transition-opacity flex items-center justify-center">
+                            <button type="button" 
+                                onclick="window['removeNewImage_${galleryName}'](this)"
+                                class="opacity-0 group-hover:opacity-100 text-white bg-red-500 hover:bg-red-600 rounded px-2 py-1 text-xs transition-opacity">
+                                Remove
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                };
+                reader.readAsDataURL(file);
             }
         });
-        input.files = dt.files;
         
         // Update count
-        const countElement = document.getElementById('{{ $name }}_count');
-        const countSpan = document.getElementById('{{ $name }}_selected_count');
-        const remaining = container.querySelectorAll('[data-new-image]').length;
-        if (remaining > 0) {
-            countSpan.textContent = remaining;
+        const totalNew = container.querySelectorAll('[data-new-image]').length;
+        if (totalNew > 0) {
+            countSpan.textContent = totalNew;
+            countElement.classList.remove('hidden');
         } else {
             countElement.classList.add('hidden');
         }
-    }
-}
-
-function removeExistingImage(button, imageId) {
-    if (confirm('Are you sure you want to remove this image?')) {
-        const div = button.closest('[data-image-id]');
+    };
+    
+    window['removeNewImage_' + galleryName] = function(button) {
+        const container = document.getElementById(galleryName + '_preview_container');
+        const div = button.closest('[data-new-image]');
         if (div) {
-            // Add to removal list
-            const hiddenInput = div.querySelector('input[name="existing_gallery[]"]');
-            if (hiddenInput) {
-                hiddenInput.name = 'removed_gallery[]';
-            }
             div.remove();
+            
+            // Update file input
+            const input = document.getElementById(galleryName);
+            const dt = new DataTransfer();
+            const files = Array.from(input.files);
+            const index = Array.from(container.querySelectorAll('[data-new-image]')).indexOf(div);
+            
+            files.forEach((file, i) => {
+                if (i !== index) {
+                    dt.items.add(file);
+                }
+            });
+            input.files = dt.files;
+            
+            // Update count
+            const countElement = document.getElementById(galleryName + '_count');
+            const countSpan = document.getElementById(galleryName + '_selected_count');
+            const remaining = container.querySelectorAll('[data-new-image]').length;
+            if (remaining > 0) {
+                countSpan.textContent = remaining;
+            } else {
+                countElement.classList.add('hidden');
+            }
         }
-    }
-}
+    };
+    
+    window['removeExistingImage_' + galleryName] = function(button, imageId) {
+        if (confirm('Are you sure you want to remove this image?')) {
+            const div = button.closest('[data-image-id]');
+            if (div) {
+                // Add to removal list
+                const hiddenInput = div.querySelector('input[name="existing_gallery[]"]');
+                if (hiddenInput) {
+                    hiddenInput.name = 'removed_gallery[]';
+                }
+                div.remove();
+            }
+        }
+    };
+    
+    // Also expose generic functions for backwards compatibility
+    window.handleGalleryUpload = window['handleGalleryUpload_' + galleryName];
+    window.removeNewImage = window['removeNewImage_' + galleryName];
+    window.removeExistingImage = window['removeExistingImage_' + galleryName];
+})();
 </script>

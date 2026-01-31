@@ -16,9 +16,7 @@
                     class="text-white font-medium text-base hover:text-orange-100 transition-all duration-300 tracking-wide">Home</a>
             </li>
             <li>
-                <a href="/about-us"
-                    class="text-white font-medium text-base hover:text-orange-100 transition-all duration-300 tracking-wide">About
-                    Us</a>
+                <a href="/about-us" class="text-white font-medium text-base hover:text-orange-100 transition-all duration-300 tracking-wide">About Us</a>
             </li>
             <li>
                 <a href="/departments"
