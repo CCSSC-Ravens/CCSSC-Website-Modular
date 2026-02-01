@@ -6,7 +6,10 @@
             <button onclick="scrollToSection({{ $index }})"
                 class="nav-btn {{ $index === 0 ? 'active' : '' }} w-12 h-12 md:w-14 md:h-14 rounded-xl bg-white/10 backdrop-blur-sm border-2 border-white/30 hover:border-white/60 flex items-center justify-center"
                 data-index="{{ $index }}" title="{{ $committee['shortName'] }}">
-                @include('committee::components.committee-icon', ['id' => $committee['id'], 'size' => 'nav'])
+                @include('committee::components.committee-icon', [
+                    'id' => $committee['id'],
+                    'size' => 'nav',
+                ])
             </button>
         </div>
     @endforeach
