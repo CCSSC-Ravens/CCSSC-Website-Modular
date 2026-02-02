@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CommitteeSeeder::class,
             AdminSeeder::class,
+            PostSeeder::class,
         ]);
 
         User::factory()->create([

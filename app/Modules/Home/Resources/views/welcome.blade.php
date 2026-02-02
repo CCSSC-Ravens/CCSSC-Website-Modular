@@ -122,6 +122,7 @@
         </div>
     </section>
     <x-footer />
+    <x-feedback-button />
 </body>
 
 </html>

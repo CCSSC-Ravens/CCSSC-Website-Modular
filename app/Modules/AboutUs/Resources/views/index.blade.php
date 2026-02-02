@@ -74,6 +74,7 @@
 
         <x-footer />
     </section>
+    <x-feedback-button />
 </body>
 
 </html>
